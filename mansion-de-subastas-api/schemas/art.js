@@ -1,1 +1,3 @@
-// TODO: implement the art schema.
+const Schema = require('mongoose').Schema;
+
+module.exports = new Schema();

@@ -1,1 +1,3 @@
-// TODO: implement artist schema.
+const Schema = require('mongoose').Schema;
+
+module.exports = new Schema();
