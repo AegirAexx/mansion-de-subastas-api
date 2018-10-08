@@ -1,0 +1,28 @@
+{
+  "name": "mansion-de-subastas-api",
+  "version": "1.0.0",
+  "description": "Large assignment 2 in SC-T-514-VEFT @ Reykjavik University",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AegirAexx/mansion-de-subastas-api.git"
+  },
+  "keywords": [],
+  "author": "Aegir Aexx",
+  "license": "WTFPL",
+  "bugs": {
+    "url": "https://github.com/AegirAexx/mansion-de-subastas-api/issues"
+  },
+  "homepage": "https://github.com/AegirAexx/mansion-de-subastas-api#readme",
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "express": "^4.16.3",
+    "mongoose": "^5.3.2"
+  },
+  "devDependencies": {
+    "nodemon": "^1.18.4"
+  }
+}
