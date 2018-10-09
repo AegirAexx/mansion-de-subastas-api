@@ -1,27 +1,34 @@
-const customerService = () => {
-    const getAllCustomers = () => {
+const EventEmitter = require('events');
+
+class CustomerService extends EventEmitter {
+    constructor() {
+        super();
+        this.events = {
+            GET_ALL_CUSTOMERS: 'GET_ALL_CUSTOMERS',
+            GET_CUSTOMER_BY_ID: 'GET_CUSTOMER_BY_ID',
+            GET_CUSTOMER_AUCTION_BIDS: 'GET_CUSTOMER_AUCTION_BIDS',
+            CREATE_CUSTOMER: 'CREATE_CUSTOMER'
+        };
+    }
+    getAllCustomers() {
         // Your implementation goes here
+        // Should emit a GET_ALL_CUSTOMERS event when the data is available
     };
 
-    const getCustomerById = (id) => {
+    getCustomerById(id) {
         // Your implementation goes here
+        // Should emit a GET_CUSTOMER_BY_ID event when the data is available
     };
 
-    const getCustomerAuctionBids = (customerId) => {
+    getCustomerAuctionBids(customerId) {
         // Your implementation goes here
+        // Should emit a GET_CUSTOMER_AUCTION_BIDS event when the data is available
     };
 
-    const createCustomer = (customer) => {
+    createCustomer(customer) {
         // Your implementation goes here
-    };
-
-    return {
-        getAllCustomers,
-        getCustomerById,
-        getCustomerOrders,
-        getCustomerAuctionBids,
-        createCustomer
+        // Should emit a CREATE_CUSTOMER event when the data is available
     };
 };
 
-module.exports = customerService();
+module.exports = CustomerService;

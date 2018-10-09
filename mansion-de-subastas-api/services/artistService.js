@@ -1,21 +1,28 @@
-const artistService = () => {
-    const getAllArtists = () => {
+const EventEmitter = require('events');
+
+class ArtistService extends EventEmitter {
+    constructor() {
+        super();
+        this.events = {
+            GET_ALL_ARTISTS: 'GET_ALL_ARTISTS',
+            GET_ARTIST_BY_ID: 'GET_ARTIST_BY_ID',
+            CREATE_ARTIST: 'CREATE_ARTIST'
+        };
+    }
+    getAllArtists() {
         // Your implementation goes here
+        // Should emit a GET_ALL_ARTISTS event when the data is available
     };
 
-    const getArtistById = (id) => {
+    getArtistById() {
         // Your implementation goes here
+        // Should emit a GET_ARTIST_BY_ID event when the data is available
     };
 
-    const createArtist = () => {
+    createArtist() {
         // Your implementation goes here
-    };
-
-    return {
-        getAllArtists,
-        getArtistById,
-        createArtist
+        // Should emit a CREATE_ARTIST event when the data is available
     };
 };
 
-module.exports = artistService();
+module.exports = ArtistService;

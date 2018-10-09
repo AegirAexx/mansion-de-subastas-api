@@ -1,36 +1,47 @@
-const auctionService = () => {
-    const getAllAuctions = () => {
-        // Your implementation goes here
-    };
+EventEmitter = require('events');
 
-    const getAuctionById = id => {
-        // Your implementation goes here
-    };
+class AuctionService extends EventEmitter {
+	constructor() {
+		super();
+		this.events = {
+			GET_ALL_AUCTIONS: 'GET_ALL_AUCTIONS',
+			GET_AUCTION_BY_ID: 'GET_AUCTION_BY_ID',
+			GET_AUCTION_WINNER: 'GET_AUCTION_WINNER',
+			CREATE_AUCTION: 'CREATE_AUCTION',
+			GET_AUCTION_BIDS_WITHIN_AUCTION: 'GET_AUCTION_BIDS_WITHIN_AUCTION',
+			PLACE_NEW_BID: 'PLACE_NEW_BID'
+		};
+	}
 
-    const getAuctionWinner = auctionId => {
-        // Your implementation goes here
-    };
+	getAllAuctions() {
+		// Your implementation goes here
+        // Should emit a GET_ALL_AUCTIONS event when the data is available
+	};
 
-    const createAuction = auction => {
-        // Your implementation goes here
-    };
+	getAuctionById(id) {
+		// Your implementation goes here
+        // Should emit a GET_AUCTION_BY_ID event when the data is available
+	};
 
-    const getAuctionBidsWithinAuction = auctionId => {
-        // Your implementation goes here
-    };
+	getAuctionWinner(auctionId) {
+		// Your implementation goes here
+        // Should emit a GET_AUCTION_WINNER event when the data is available
+	};
 
-    const placeNewBid = (auctionId, customerId, price) => {
-        // Your implementation goes here
-    };
+	createAuction(auction) {
+		// Your implementation goes here
+        // Should emit a CREATE_AUCTION event when the data is available
+	};
 
-    return {
-        getAllAuctions,
-        getAuctionById,
-        getAuctionWinner,
-        createAuction,
-        getAuctionBidsWithinAuction,
-        placeNewBid
-    };
+	getAuctionBidsWithinAuction(auctionId) {
+		// Your implementation goes here
+        // Should emit a GET_AUCTION_BIDS_WITHIN_AUCTION event when the data is available
+	};
+
+	placeNewBid(auctionId, customerId, price) {
+		// Your implementation goes here
+        // Should emit a PLACE_NEW_BID event when the data is available
+	};
 };
 
-module.exports = auctionService();
+module.exports = AuctionService;
