@@ -13,7 +13,7 @@ const customerService = ('./service/customerService');
 
 // Get all arts.
 router.get('/arts', (req, res) => {
-    res.send(`All the works of art...`);
+    return res.json(artService.getAllArts());
 });
 
 // Get art by id.
