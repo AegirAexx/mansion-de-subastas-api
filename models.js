@@ -28,9 +28,10 @@ const auction = {
     "artId": "HaShEdStRiNgWiThNuMbErSaNdLeTtErS",
     "minimumPrice": 10,
     "endDate": "09/09/2018 10:00:00"
-}
+};
 
 const auctionBid = {
     "customerId": "HaShEdStRiNgWiThNuMbErSaNdLeTtErS",
     "price": 20
-}
+};
+

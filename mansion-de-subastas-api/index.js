@@ -7,26 +7,56 @@ const router = express.Router();
 const port = 3000;
 const bodyParser = require('body-parser');
 const ArtistService = require('./services/artistService');
-// const ArtService = require('./service/artService');
-// const AuctionService = require('./service/auctionService');
-// const CustomerService = require('./service/customerService');
+const ArtService = require('./services/artService');
+// const AuctionService = require('./services/auctionService');
+// const CustomerService = require('./services/customerService');
+
 
 // Get all arts.
 router.get('/arts', (req, res) => {
-    // return res.json(ArtService.getAllArts());
-    return res.send('All the arts...');
+    const artService = new ArtService();
+
+    artService.on('GET_ALL_ARTS', (data) => {
+        return res.json(data).end();
+    });
+
+    artService.on('GET_ALL_ARTS_ERROR', (data) => {
+        return res.status(500).end();
+    });
+
+    artService.getAllArts();
 });
 
 // Get art by id.
 router.get('/arts/:id', (req, res) => {
     const { id } = req.params;
-    return res.send(`The id: ${id} was requested!`);
+    const artService = new ArtService();
+
+    artService.on('GET_ART_BY_ID', (data) => {
+        return res.json(data).end();
+    });
+
+    artService.on('GET_ART_BY_ID_ERROR', (data) => {
+        return res.status(500).end();
+    });
+
+    artService.getArtById(id);
 });
 
 // Create art.
 router.post('/arts', (req, res) => {
     const { body } = req;
-    return res.status(204).json(body);
+    const artService = new ArtService();
+
+    artService.on('CREATE_ART', (data) => {
+        return res.status(201).end();
+    });
+
+    artService.on('CREATE_ART_ERROR', (data) => {
+        return res.status(500).end();
+    });
+
+    artService.createArt(body);
 });
 
 // Get all artists.
@@ -76,6 +106,7 @@ router.post('/artists', (req, res) => {
     artistService.createArtist(body);
 });
 
+/*
 // Get all the customers.
 router.get('/customers', (req, res) => {
     return res.send(`All the customers...`);
@@ -133,7 +164,7 @@ router.post('/auctions/:id/bids', (req, res) => {
     const { body } = req;
     return res.status(204).json(body);
 });
-
+*/
 app.use(bodyParser.json());
 app.use('/api', router);
 
