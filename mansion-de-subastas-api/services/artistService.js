@@ -1,5 +1,5 @@
 const EventEmitter = require('events');
-const { Artist, connection } = require('../data/db');
+const { Artist } = require('../data/db');
 
 class ArtistService extends EventEmitter {
     constructor() {
@@ -16,17 +16,17 @@ class ArtistService extends EventEmitter {
 
     getAllArtists() {
         Artist.find({}, (err, artists) => {
-            if(err) { this.emit(this.events.GET_ALL_ARTISTS_ERROR, err); }
+            if(err) { this.emit(this.events.GET_ALL_ARTISTS_ERROR); }
             else { this.emit(this.events.GET_ALL_ARTISTS, artists); }
         });
-    };
+    }
 
     getArtistById(id) {
         Artist.findById(id, (err, artist) => {
-            if(err) { this.emit(this.events.GET_ARTIST_BY_ID_ERROR, err); }
+            if(err) { this.emit(this.events.GET_ARTIST_BY_ID_ERROR); }
             else { this.emit(this.events.GET_ARTIST_BY_ID, artist); }
         });
-    };
+    }
 
     createArtist(body) {
         const artist = new Artist({
@@ -36,10 +36,10 @@ class ArtistService extends EventEmitter {
         });
 
         Artist.create(artist, (err) => {
-            if(err) { this.emit(this.events.CREATE_ARTIST_ERROR, err); }
+            if(err) { this.emit(this.events.CREATE_ARTIST_ERROR); }
             else { this.emit(this.events.CREATE_ARTIST); }
         });
-    };
-};
+    }
+}
 
 module.exports = ArtistService;

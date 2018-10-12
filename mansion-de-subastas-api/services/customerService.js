@@ -1,5 +1,5 @@
 const EventEmitter = require('events');
-const { Customer, connection } = require('../data/db');
+const { Customer /* , Auction */ } = require('../data/db');
 
 class CustomerService extends EventEmitter {
     constructor() {
@@ -15,23 +15,24 @@ class CustomerService extends EventEmitter {
             CREATE_CUSTOMER_ERROR: 'CREATE_CUSTOMER_ERROR'
         };
     }
+
     getAllCustomers() {
         Customer.find({}, (err, customers) => {
-            if(err) { this.emit(this.events.GET_ALL_CUSTOMERS_ERROR, err); }
+            if(err) { this.emit(this.events.GET_ALL_CUSTOMERS_ERROR); }
             else { this.emit(this.events.GET_ALL_CUSTOMERS, customers); }
         });
-    };
+    }
 
     getCustomerById(id) {
         Customer.findById(id, (err, customer) => {
-            if(err) { this.emit(this.events.GET_CUSTOMER_BY_ID_ERROR, err); }
+            if(err) { this.emit(this.events.GET_CUSTOMER_BY_ID_ERROR); }
             else { this.emit(this.events.GET_CUSTOMER_BY_ID, customer); }
         });
-    };
+    }
 
-    getCustomerAuctionBids(customerId) {
+    getCustomerAuctionBids(/*customerId*/) {
         // Needs more connections to make the query.
-    };
+    }
 
     createCustomer(body) {
         const customer = new Customer({
@@ -42,10 +43,10 @@ class CustomerService extends EventEmitter {
         });
 
         Customer.create(customer, (err) => {
-            if(err) { this.emit(this.events.CREATE_CUSTOMER_ERROR, err); }
+            if(err) { this.emit(this.events.CREATE_CUSTOMER_ERROR); }
             else { this.emit(this.events.CREATE_CUSTOMER); }
         });
-    };
-};
+    }
+}
 
 module.exports = CustomerService;

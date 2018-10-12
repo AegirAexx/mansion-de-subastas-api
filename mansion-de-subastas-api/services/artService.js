@@ -1,5 +1,5 @@
 const EventEmitter = require('events');
-const { Art, connection } = require('../data/db');
+const { Art } = require('../data/db');
 
 class ArtService extends EventEmitter {
     constructor() {
@@ -16,17 +16,17 @@ class ArtService extends EventEmitter {
 
     getAllArts() {
         Art.find({}, (err, arts) => {
-            if(err) { this.emit(this.events.GET_ALL_ARTS_ERROR, err); }
+            if(err) { this.emit(this.events.GET_ALL_ARTS_ERROR); }
             else { this.emit(this.events.GET_ALL_ARTS, arts); }
         });
-    };
+    }
 
     getArtById(id) {
         Art.findById(id, (err, art) => {
-            if(err) { this.emit(this.events.GET_ART_BY_ID_ERROR, err); }
+            if(err) { this.emit(this.events.GET_ART_BY_ID_ERROR); }
             else { this.emit(this.events.GET_ART_BY_ID, art); }
         });
-    };
+    }
 
     createArt(body) {
         const art = new Art({
@@ -37,10 +37,10 @@ class ArtService extends EventEmitter {
         });
 
         Art.create(art, (err) => {
-            if(err) { this.emit(this.events.CREATE_ART_ERROR, err); }
+            if(err) { this.emit(this.events.CREATE_ART_ERROR); }
             else { this.emit(this.events.CREATE_ART); }
         });
-    };
-};
+    }
+}
 
 module.exports = ArtService;
