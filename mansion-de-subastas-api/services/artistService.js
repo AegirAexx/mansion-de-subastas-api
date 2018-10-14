@@ -8,8 +8,10 @@ class ArtistService extends EventEmitter {
             GET_ALL_ARTISTS: 'GET_ALL_ARTISTS',
             GET_ARTIST_BY_ID: 'GET_ARTIST_BY_ID',
             CREATE_ARTIST: 'CREATE_ARTIST',
+            // ERRORS
             GET_ALL_ARTISTS_ERROR: 'GET_ALL_ARTISTS_ERROR',
             GET_ARTIST_BY_ID_ERROR: 'GET_ARTIST_BY_ID_ERROR',
+            GET_ARTIST_BY_ID_NOT_ID_ERROR: 'GET_ARTIST_BY_ID_NOT_ID_ERROR',
             CREATE_ARTIST_ERROR: 'CREATE_ARTISTS_ERROR'
         };
     }
@@ -23,8 +25,10 @@ class ArtistService extends EventEmitter {
 
     getArtistById(id) {
         Artist.findById(id, (err, artist) => {
-            if(err) { this.emit(this.events.GET_ARTIST_BY_ID_ERROR); }
-            else { this.emit(this.events.GET_ARTIST_BY_ID, artist); }
+            if(err != null){
+                if(err.reason == undefined) { this.emit(this.events.GET_ARTIST_BY_ID_NOT_ID_ERROR); }
+                if(err) { this.emit(this.events.GET_ARTIST_BY_ID_ERROR); }
+            }else { this.emit(this.events.GET_ARTIST_BY_ID, artist); }
         });
     }
 

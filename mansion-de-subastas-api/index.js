@@ -25,6 +25,7 @@ router.get('/arts/:id', (req, res) => {
     const artService = new ArtService();
     artService.on('GET_ART_BY_ID', data => res.json(data).end());
     artService.on('GET_ART_BY_ID_ERROR', () => res.status(500).end());
+    artService.on('GET_ART_BY_ID_NOT_ID_ERROR', () => res.status(400).end('The ID does not exist'));
     artService.getArtById(id);
 });
 
@@ -34,6 +35,7 @@ router.post('/arts', (req, res) => {
     const artService = new ArtService();
     artService.on('CREATE_ART', () => res.status(201).end());
     artService.on('CREATE_ART_ERROR', () => res.status(500).end());
+    artService.on('CREATE_ART_NO_ARTIST_ERROR', () => res.status(412).end('Missing valid Artist ID'));
     artService.createArt(body);
 });
 
@@ -51,6 +53,7 @@ router.get('/artists/:id', (req, res) => {
     const artistService = new ArtistService();
     artistService.on('GET_ARTIST_BY_ID', data => res.json(data).end());
     artistService.on('GET_ARTIST_BY_ID_ERROR', () => res.status(500).end());
+    artistService.on('GET_ARTIST_BY_ID_NOT_ID_ERROR', () => res.status(400).end('The ID does not exist'));
     artistService.getArtistById(id);
 });
 
@@ -77,6 +80,7 @@ router.get('/customers/:id', (req, res) => {
     const customerService = new CustomerService();
     customerService.on('GET_CUSTOMER_BY_ID', data => res.json(data).end());
     customerService.on('GET_CUSTOMER_BY_ID_ERROR', () => res.status(500).end());
+    customerService.on('GET_CUSTOMER_BY_ID_NOT_ID_ERROR', () => res.status(400).end('The ID does not exist'));
     customerService.getCustomerById(id);
 });
 
@@ -95,6 +99,7 @@ router.get('/customers/:id/auction-bids', (req, res) => {
     const customerService = new CustomerService();
     customerService.on('GET_CUSTOMER_AUCTION_BIDS', data => res.json(data).end());
     customerService.on('GET_CUSTOMER_AUCTION_BIDS_ERROR', () => res.status(500).end());
+    customerService.on('GET_CUSTOMER_AUCTION_BIDS_NOT_ID_ERROR', () => res.status(400).end('The ID does not exist'));
     customerService.getCustomerAuctionBids(id);
 });
 
@@ -112,6 +117,7 @@ router.get('/auctions/:id', (req, res) => {
     const auctionService = new AuctionService();
     auctionService.on('GET_AUCTION_BY_ID', data => res.json(data).end());
     auctionService.on('GET_AUCTION_BY_ID_ERROR', () => res.status(500).end());
+    auctionService.on('GET_AUCTION_BY_ID_NOT_ID_ERROR', () => res.status(400).end('The ID does not exist'));
     auctionService.getAuctionById(id);
 });
 
@@ -127,6 +133,8 @@ router.post('/auctions', (req, res) => {
     const auctionService = new AuctionService();
     auctionService.on('CREATE_AUCTION', () => res.status(201).end());
     auctionService.on('CREATE_AUCTION_ERROR', () => res.status(500).end());
+    auctionService.on('CREATE_AUCTION_NO_ART_ERROR', () => res.status(412).end('Missing a valid Art ID'));
+    auctionService.on('CREATE_AUCTION_ART_NOT_AUCTION_ITEM_ERROR', () => res.status(412).end('The art is not auctionable'));
     auctionService.createAuction(body);
 });
 
@@ -144,4 +152,5 @@ router.post('/auctions/:id/bids', (req, res) => {
 
 app.use(bodyParser.json());
 app.use('/api', router);
+app.use( (req, res) => res.status(404).send('404 Not Found'));
 app.listen(port);
