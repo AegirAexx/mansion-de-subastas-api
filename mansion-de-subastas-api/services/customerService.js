@@ -1,5 +1,5 @@
 const EventEmitter = require('events');
-const { Customer /* , Auction */ } = require('../data/db');
+const { Customer, Auction } = require('../data/db');
 
 class CustomerService extends EventEmitter {
     constructor() {
@@ -9,10 +9,12 @@ class CustomerService extends EventEmitter {
             GET_CUSTOMER_BY_ID: 'GET_CUSTOMER_BY_ID',
             GET_CUSTOMER_AUCTION_BIDS: 'GET_CUSTOMER_AUCTION_BIDS',
             CREATE_CUSTOMER: 'CREATE_CUSTOMER',
+            // ERRORS
             GET_ALL_CUSTOMERS_ERROR: 'GET_ALL_CUSTOMERS_ERROR',
             GET_CUSTOMER_BY_ID_ERROR: 'GET_CUSTOMER_BY_ID_ERROR',
             GET_CUSTOMER_BY_ID_NOT_ID_ERROR: 'GET_CUSTOMER_BY_ID_NOT_ID_ERROR',
             GET_CUSTOMER_AUCTION_BIDS_ERROR: 'GET_CUSTOMER_AUCTION_BIDS_ERROR',
+            GET_CUSTOMER_AUCTION_BIDS_NOT_ID_ERROR: 'GET_CUSTOMER_AUCTION_BIDS_NOT_ID_ERROR',
             CREATE_CUSTOMER_ERROR: 'CREATE_CUSTOMER_ERROR'
         };
     }
@@ -33,8 +35,22 @@ class CustomerService extends EventEmitter {
         });
     }
 
-    getCustomerAuctionBids(/*customerId*/) {
-        // Needs more connections to make the query.
+    getCustomerAuctionBids(id) {
+        const that = this;
+        Customer.find({}, (err, data) => {
+            if(err) { this.emit(this.events.GET_CUSTOMER_AUCTION_BIDS_ERROR); }
+            else {
+                const checker = data.find(c => c._id == id);
+                if(checker instanceof Object){
+                    Auction.find({ customerId: id }, (err, auctions) => {
+                        if(err != null){
+                            // if(err.reason == undefined){  }
+                            if(err) { that.emit(that.events.GET_CUSTOMER_AUCTION_BIDS_ERROR); }
+                        } else { that.emit(that.events.GET_CUSTOMER_AUCTION_BIDS, auctions); }
+                    });
+                } else { this.emit(this.events.GET_CUSTOMER_AUCTION_BIDS_NOT_ID_ERROR); }
+            }
+        });
     }
 
     createCustomer(body) {

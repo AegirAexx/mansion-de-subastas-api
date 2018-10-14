@@ -147,7 +147,7 @@ router.get('/auctions/:id/bids', (req, res) => {
 // Create a new auction bid.
 router.post('/auctions/:id/bids', (req, res) => {
     const { body } = req;
-    res.status(204).json(body);
+    res.status(201).json(body);
 });
 
 app.use(bodyParser.json());
