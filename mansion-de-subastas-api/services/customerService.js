@@ -1,6 +1,5 @@
 const EventEmitter = require('events');
 const { Customer, AuctionBid } = require('../data/db');
-const Mongoose = require('mongoose').Types.ObjectId;
 
 class CustomerService extends EventEmitter {
     constructor() {
@@ -37,7 +36,7 @@ class CustomerService extends EventEmitter {
     }
 
     getCustomerAuctionBids(id) {
-        AuctionBid.find({ customerId: id }, (err, bids) => {
+        AuctionBid.find({ 'customerId': id }, (err, bids) => {
             if(err != null){
                 if(err.reason == undefined) {this.emit(this.events.GET_CUSTOMER_AUCTION_BIDS_NOT_ID_ERROR); }
                 if(err) { this.emit(this.events.GET_CUSTOMER_AUCTION_BIDS_ERROR); }
@@ -47,24 +46,6 @@ class CustomerService extends EventEmitter {
             }
         });
     }
-
-    // getCustomerAuctionBids(id) {
-    //     const that = this;
-    //     Customer.find({}, (err, data) => {
-    //         if(err) { this.emit(this.events.GET_CUSTOMER_AUCTION_BIDS_ERROR); }
-    //         else {
-    //             const checker = data.find(c => c._id == id);
-    //             if(checker instanceof Object){
-    //                 AuctionBid.findOne({ 'customerId': id }, (err, auctions) => {
-    //                     if(err != null){
-    //                         // if(err.reason == undefined){  }
-    //                         if(err) { that.emit(that.events.GET_CUSTOMER_AUCTION_BIDS_ERROR); }
-    //                     } else { that.emit(that.events.GET_CUSTOMER_AUCTION_BIDS, auctions); }
-    //                 });
-    //             } else { this.emit(this.events.GET_CUSTOMER_AUCTION_BIDS_NOT_ID_ERROR); }
-    //         }
-    //     });
-    // }
 
     createCustomer(body) {
         const customer = new Customer({
