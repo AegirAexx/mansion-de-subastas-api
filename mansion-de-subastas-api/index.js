@@ -124,7 +124,13 @@ router.get('/auctions/:id', (req, res) => {
 // Get the winner of the auction.
 router.get('/auctions/:id/winner', (req, res) => {
     const { id } = req.params;
-    res.send(`The id: ${id} was requested!`);
+    const auctionService = new AuctionService();
+    auctionService.on('GET_AUCTION_WINNER_NOT_FINISHED_ERROR', () => res.status(409).end('The auction has not finished yet'));
+    auctionService.on('GET_AUCTION_WINNER_NO_BIDS_ERROR', () => res.status(200).end('This auction has no bids'));
+    auctionService.on('GET_AUCTION_WINNER_ERROR', () => res.status(500).end());
+    auctionService.on('GET_AUCTION_WINNER_NOT_ID_ERROR', () => res.status(400).end('The ID does not exist'));
+    auctionService.on('GET_AUCTION_WINNER', data => res.json(data).end());
+    auctionService.getAuctionWinner(id);
 });
 
 // Create a new auction.
@@ -141,13 +147,25 @@ router.post('/auctions', (req, res) => {
 // Get all auction bids associated with an auction.
 router.get('/auctions/:id/bids', (req, res) => {
     const { id } = req.params;
-    res.send(`The id: ${id} was requested!`);
+    const auctionService = new AuctionService();
+    auctionService.on('GET_AUCTION_BIDS_WITHIN_AUCTION', data => res.json(data).end());
+    auctionService.on('GET_AUCTION_BIDS_WITHIN_AUCTION_NOT_ID_ERROR', () => res.status(400).end('The ID does not exist'));
+    auctionService.on('GET_AUCTION_BIDS_WITHIN_AUCTION_ERROR', () => res.status(500).end());
+    auctionService.getAuctionBidsWithinAuction(id);
 });
 
 // Create a new auction bid.
 router.post('/auctions/:id/bids', (req, res) => {
     const { body } = req;
-    res.status(201).json(body);
+    const { id } = req.params;
+    const auctionService = new AuctionService();
+    auctionService.on('PLACE_NEW_BID', () => res.status(201).end());
+    auctionService.on('PLACE_NEW_BID_ERROR', () => res.status(500).end());
+    auctionService.on('PLACE_NEW_BID_NOT_AUCTION_ID_ERROR', () => res.status(412).end('The Auction ID does not exist'));
+    auctionService.on('PLACE_NEW_BID_NOT_CORRECT_BID_ERROR', () => res.status(412).end('The bid ammount was incorrect'));
+    auctionService.on('PLACE_NEW_BID_DATE_PASSED_ERROR', () => res.status(403).end('The auction is closed'));
+    auctionService.on('PLACE_NEW_BID_NOT_CUSTOMER_ID_ERROR', () => res.status(412).end('The Customer ID does not exist'));
+    auctionService.placeNewBid(id, body);
 });
 
 app.use(bodyParser.json());
